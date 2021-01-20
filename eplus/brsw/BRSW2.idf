@@ -35,7 +35,7 @@ Building,
 
 !-   ===========  ALL OBJECTS IN CLASS: TIMESTEP ===========
 
-Timestep,60;
+  Timestep,60;
 
 !-   ===========  ALL OBJECTS IN CLASS: SITE:LOCATION ===========
 
@@ -113,18 +113,17 @@ SizingPeriod:DesignDay,
 
 RunPeriod,
     Annual,                  !- Name
-    8,                       !- Begin Month
-    1,                       !- Begin Day of Month
-    8,                       !- End Month
-    2,                       !- End Day of Month
-    UseWeatherFile,          !- Day of Week for Start Day
-    Yes,                     !- Use Weather File Holidays and Special Days
-    Yes,                     !- Use Weather File Daylight Saving Period
+    7,                       !- Begin Month
+    31,                       !- Begin Day of Month
+    8,                      !- End Month
+    27,                      !- End Day of Month
+    Monday,                  !- Day of Week for Start Day
+    No,                      !- Use Weather File Holidays and Special Days
+    No,                      !- Use Weather File Daylight Saving Period
     No,                      !- Apply Weekend Holiday Rule
     Yes,                     !- Use Weather File Rain Indicators
     Yes,                     !- Use Weather File Snow Indicators
-    1,                       !- Number of Times Runperiod to be Repeated
-    Yes;                     !- Increment Day of Week on repeat
+    1;                       !- Number of Times Runperiod to be Repeated
 
 
 !-   ===========  ALL OBJECTS IN CLASS: RUNPERIODCONTROL:SPECIALDAYS ===========
@@ -473,12 +472,12 @@ Schedule:Compact,
     Fraction,                !- Schedule Type Limits Name
     Through: 12/31,          !- Field 1
     For: Tuesday Wednesday Thursday Friday SummerDesignDay WinterDesignDay,  !- Field 2
-    Until: 04:00, 0,         !- Field 4
-    Until: 16:00, 1,         !- Field 6
+    Until: 06:00, 0,         !- Field 4
+    Until: 19:00, 1,         !- Field 6
     Until: 24:00, 0,         !- Field 8
     For: Monday ,            !- Field 9
-    Until: 02:00, 0,         !- Field 11
-    Until: 16:00, 1,         !- Field 13
+    Until: 06:00, 0,         !- Field 11
+    Until: 19:00, 1,         !- Field 13
     Until: 24:00, 0,         !- Field 15
     For: Sunday Holidays AllOtherDays,  !- Field 16
     Until: 24:00, 0;         !- Field 18
@@ -2259,7 +2258,12 @@ BuildingSurface:Detailed,
                                         !- X,Y,Z  3 {m}
     89.191252186271, -8.883976296286, 3.962400000000;
                                         !- X,Y,Z  4 {m}
-
+Schedule:Compact,
+    AIR_VELO_SCH,            !- Name
+    Any Number,              !- Schedule Type Limits Name
+    Through: 12/31,          !- Field 1
+    For: AllDays,            !- Field 2
+    Until: 24:00, 0.2;       !- Field 4
 
 !-   ===========  ALL OBJECTS IN CLASS: PEOPLE ===========
 
@@ -2281,8 +2285,9 @@ People,
     Office Work Eff. Schedule,  !- Work Efficiency Schedule Name
     ClothingInsulationSchedule,  !- Clothing Insulation Calculation Method
     Always On,               !- Clothing Insulation Calculation Method Schedule Name
-    Office Clothing Schedule;!- Clothing Insulation Schedule Name
-
+    Office Clothing Schedule,            !- Clothing Insulation Schedule Name
+    AIR_VELO_SCH,            !- Air Velocity Schedule Name
+    FANGER;                  !- Thermal Comfort Model 1 Type
 People,
     Lunchroom People,        !- Name
     Lunchroom,               !- Zone or ZoneList Name
@@ -2301,8 +2306,9 @@ People,
     Office Work Eff. Schedule,  !- Work Efficiency Schedule Name
     ClothingInsulationSchedule,  !- Clothing Insulation Calculation Method
     Always On,               !- Clothing Insulation Calculation Method Schedule Name
-    Office Clothing Schedule;!- Clothing Insulation Schedule Name
-
+    Office Clothing Schedule,            !- Clothing Insulation Schedule Name
+    AIR_VELO_SCH,            !- Air Velocity Schedule Name
+    FANGER;                  !- Thermal Comfort Model 1 Type
 People,
     Bathroom People,         !- Name
     Bathroom,                !- Zone or ZoneList Name
@@ -2321,8 +2327,9 @@ People,
     Office Work Eff. Schedule,  !- Work Efficiency Schedule Name
     ClothingInsulationSchedule,  !- Clothing Insulation Calculation Method
     Always On,               !- Clothing Insulation Calculation Method Schedule Name
-    Office Clothing Schedule;!- Clothing Insulation Schedule Name
-
+    Office Clothing Schedule,            !- Clothing Insulation Schedule Name
+    AIR_VELO_SCH,            !- Air Velocity Schedule Name
+    FANGER;                  !- Thermal Comfort Model 1 Type
 People,
     Office People,           !- Name
     Office,                  !- Zone or ZoneList Name
@@ -2341,8 +2348,9 @@ People,
     Office Work Eff. Schedule,  !- Work Efficiency Schedule Name
     ClothingInsulationSchedule,  !- Clothing Insulation Calculation Method
     Always On,               !- Clothing Insulation Calculation Method Schedule Name
-    Office Clothing Schedule;!- Clothing Insulation Schedule Name
-
+    Office Clothing Schedule,            !- Clothing Insulation Schedule Name
+    AIR_VELO_SCH,            !- Air Velocity Schedule Name
+    FANGER;                  !- Thermal Comfort Model 1 Type
 People,
     Warehouse Floor People,  !- Name
     Warehouse Floor,         !- Zone or ZoneList Name
@@ -2361,8 +2369,9 @@ People,
     Office Work Eff. Schedule,  !- Work Efficiency Schedule Name
     ClothingInsulationSchedule,  !- Clothing Insulation Calculation Method
     Always On,               !- Clothing Insulation Calculation Method Schedule Name
-    Office Clothing Schedule;!- Clothing Insulation Schedule Name
-
+    Office Clothing Schedule,            !- Clothing Insulation Schedule Name
+    AIR_VELO_SCH,            !- Air Velocity Schedule Name
+    FANGER;                  !- Thermal Comfort Model 1 Type
 
 !-   ===========  ALL OBJECTS IN CLASS: LIGHTS ===========
 
@@ -5549,3 +5558,26 @@ Output:Variable,*,Facility Total Electric Demand Power,Timestep;
 Output:Variable,Cooling Thermostat 1,Schedule Value,Timestep;
 Output:Variable,Cooling Thermostat 2,Schedule Value,Timestep;
 Output:Variable,Cooling Thermostat 3,Schedule Value,Timestep;
+Output:Variable,*,Facility Thermal Comfort ASHRAE 55 Simple Model Summer or Winter Clothes Not Comfortable Time,Timestep;
+Output:Variable,*,Zone Thermal Comfort Fanger Model PPD,Timestep;
+
+!Construction,
+!    InteriorFurnishings,     !- Name
+!    Std Wood 6inch;          !- Outside Layer
+
+!Material,
+!    Std Wood 6inch,          !- Name
+!    MediumSmooth,            !- Roughness
+!    0.15,                    !- Thickness {m}
+!    0.12,                    !- Conductivity {W/m-K}
+!    540.0000,                !- Density {kg/m3}
+!    1210,                    !- Specific Heat {J/kg-K}
+!    0.9000000,               !- Thermal Absorptance
+!    0.7000000,               !- Solar Absorptance
+!    0.7000000;               !- Visible Absorptance
+
+!InternalMass,
+!    Zone-BATHROOM InternalMass,  !- Name
+!    InteriorFurnishings,     !- Construction Name
+!    BATHROOM	,       !- Zone Name
+!    240.4;                     !- Surface Area {m2}
